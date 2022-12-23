@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by noweshedakram on 21/12/22.
  */
-@Entity(tableName = "CryptoCoin", indices = [Index(value = ["id", "lastUpdated"], unique = true)])
+@Entity(tableName = "CryptoCoin", indices = [Index(value = ["id"], unique = true)])
 data class Coin(
     @PrimaryKey(autoGenerate = false)
     @NonNull

@@ -2,15 +2,16 @@ package com.noweshed.cointracker.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.CoinList
 import com.noweshed.cointracker.data.model.response.USD
+import com.noweshed.cointracker.data.util.Constants.COINS_LIMIT
 import com.noweshed.cointracker.data.util.Resource
 import com.noweshed.cointracker.databinding.FragmentHomeBinding
 import com.noweshed.cointracker.presentation.adapter.CoinAdapter
@@ -45,17 +46,17 @@ class HomeFragment : Fragment() {
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
 
         cryptoViewModel.getAllCoins()
-
         cryptoViewModel.coinList.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    coinAdapter.differ.submitList(response.data?.subList(0, 10))
+                    coinAdapter.differ.submitList(response.data?.subList(0, COINS_LIMIT))
                     fragmentHomeBinding.recyclerView.visibility = View.VISIBLE
                     Log.i("HomeFragment", "${response.data}")
-                    lifecycleScope.launch(){
+                    lifecycleScope.launch() {
                         storeDataLocally(response.data)
                     }
                     fragmentHomeBinding.loadingProgress.loadingProgress.visibility = View.GONE
+//                    showLocalData()
                 }
                 is Resource.Loading -> {
                     fragmentHomeBinding.recyclerView.visibility = View.INVISIBLE
@@ -74,9 +75,17 @@ class HomeFragment : Fragment() {
         fragmentHomeBinding.swipeRefresh.setOnRefreshListener {
             fragmentHomeBinding.swipeRefresh.isRefreshing = false
             cryptoViewModel.getAllCoins()
+//            cryptoViewModel.coinListItems(COINS_LIMIT)
         }
         fragmentHomeBinding.recyclerView.adapter = coinAdapter
     }
+
+//    private fun showLocalData() {
+//        CoroutineScope(IO).launch {
+//            Log.i("showLocalData: ", cryptoViewModel.coinListItems(10).toString())
+//            coinAdapter.differ.submitList(cryptoViewModel.coinListItems(10))
+//        }
+//    }
 
     private suspend fun storeDataLocally(data: CoinList?) {
 
@@ -94,11 +103,12 @@ class HomeFragment : Fragment() {
                         item.betaValue,
                         item.firstDataAt,
                         item.lastUpdated,
-                        )
+                    )
                 )
 
                 cryptoViewModel.addCryptoUSD(
                     USD(
+                        0,
                         item.id,
                         item.quotes?.USD?.price,
                         item.quotes?.USD?.volume24h,

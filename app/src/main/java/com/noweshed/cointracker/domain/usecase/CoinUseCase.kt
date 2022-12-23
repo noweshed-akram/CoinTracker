@@ -1,5 +1,6 @@
 package com.noweshed.cointracker.domain.usecase
 
+import com.noweshed.cointracker.data.model.JoinQueryModel
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.CoinList
 import com.noweshed.cointracker.data.model.response.USD
@@ -27,11 +28,8 @@ class CoinUseCase @Inject constructor(
         coinRepo.addCryptoUSD(usd)
     }
 
-    fun coinListItems(): Flow<List<Coin>> {
-        return coinRepo.coinListItems()
+    fun coinListItems(limit: Int): List<JoinQueryModel> {
+        return coinRepo.coinListItems(limit = limit)
     }
 
-    fun usdListItems(): Flow<List<USD>> {
-        return coinRepo.usdListItems()
-    }
 }

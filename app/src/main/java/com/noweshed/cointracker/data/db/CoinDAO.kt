@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.noweshed.cointracker.data.model.JoinQueryModel
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.USD
 import kotlinx.coroutines.flow.Flow
@@ -17,13 +18,10 @@ interface CoinDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCryptoCoin(coin: Coin)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun addCryptoUSD(usd: USD)
 
-    @Query("select * from CryptoCoin")
-    fun coinListItems(): Flow<List<Coin>>
-
-    @Query("select * from usd")
-    fun usdListItems(): Flow<List<USD>>
+    @Query("select * from CryptoCoin as cc inner join USD on cc.id = coinId order by cc.rank asc limit:limit ")
+    fun coinListItems(limit: Int): List<JoinQueryModel>
 
 }

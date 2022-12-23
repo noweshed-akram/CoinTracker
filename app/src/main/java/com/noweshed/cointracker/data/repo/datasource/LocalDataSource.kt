@@ -1,5 +1,6 @@
 package com.noweshed.cointracker.data.repo.datasource
 
+import com.noweshed.cointracker.data.model.JoinQueryModel
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.USD
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,5 @@ interface LocalDataSource {
     suspend fun addCryptoCoin(coin: Coin)
     suspend fun addCryptoUSD(usd: USD)
 
-    fun coinListItems(): Flow<List<Coin>>
-    fun usdListItems(): Flow<List<USD>>
+    fun coinListItems(limit: Int): List<JoinQueryModel>
 }

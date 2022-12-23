@@ -10,10 +10,11 @@ import com.google.gson.annotations.SerializedName
  */
 @Entity(tableName = "USD")
 data class USD(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    @SerializedName("id")
-    var id: String,
+    var usdId: Int,
+    @SerializedName("coin_id")
+    var coinId: String? = null,
     @SerializedName("price")
     var price: Double? = null,
     @SerializedName("volume_24h")

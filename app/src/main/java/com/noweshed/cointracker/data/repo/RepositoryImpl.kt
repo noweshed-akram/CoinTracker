@@ -1,5 +1,6 @@
 package com.noweshed.cointracker.data.repo
 
+import com.noweshed.cointracker.data.model.JoinQueryModel
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.CoinList
 import com.noweshed.cointracker.data.model.response.USD
@@ -40,12 +41,8 @@ class RepositoryImpl @Inject constructor(
         return localDataSource.addCryptoUSD(usd)
     }
 
-    override fun coinListItems(): Flow<List<Coin>> {
-        return localDataSource.coinListItems()
-    }
-
-    override fun usdListItems(): Flow<List<USD>> {
-        return localDataSource.usdListItems()
+    override fun coinListItems(limit: Int): List<JoinQueryModel> {
+        return localDataSource.coinListItems(limit = limit)
     }
 
 }

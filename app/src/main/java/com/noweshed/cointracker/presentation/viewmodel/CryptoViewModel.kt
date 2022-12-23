@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.noweshed.cointracker.data.model.JoinQueryModel
 import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.CoinList
 import com.noweshed.cointracker.data.model.response.USD
@@ -47,12 +48,8 @@ class CryptoViewModel @Inject constructor(
         coinUseCase.addCryptoUSD(usd)
     }
 
-    fun coinListItems(): Flow<List<Coin>> {
-        return coinUseCase.coinListItems()
-    }
-
-    fun usdListItems(): Flow<List<USD>> {
-        return coinUseCase.usdListItems()
+    fun coinListItems(limit: Int): List<JoinQueryModel> {
+        return coinUseCase.coinListItems(limit = limit)
     }
 
 }

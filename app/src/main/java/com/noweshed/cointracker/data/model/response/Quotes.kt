@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
  */
 data class Quotes(
     @SerializedName("USD")
-    var USD: USD? = USD(id = "crypto")
+    var USD: USD? = USD(usdId = 0)
 )
