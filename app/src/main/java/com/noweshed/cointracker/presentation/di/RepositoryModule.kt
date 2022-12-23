@@ -1,6 +1,7 @@
 package com.noweshed.cointracker.presentation.di
 
 import com.noweshed.cointracker.data.repo.RepositoryImpl
+import com.noweshed.cointracker.data.repo.datasource.LocalDataSource
 import com.noweshed.cointracker.data.repo.datasource.RemoteDataSource
 import com.noweshed.cointracker.domain.repo.CoinRepo
 import dagger.Module
@@ -20,10 +21,12 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesRepository(
-        remoteDataSource: RemoteDataSource
+        remoteDataSource: RemoteDataSource,
+        localDataSource: LocalDataSource
     ): CoinRepo {
         return RepositoryImpl(
-            remoteDataSource = remoteDataSource
+            remoteDataSource = remoteDataSource,
+            localDataSource = localDataSource
         )
     }
 

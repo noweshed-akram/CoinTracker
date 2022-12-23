@@ -13,6 +13,7 @@ import javax.inject.Inject
 class LocalDataSourceImpl @Inject constructor(
     private val coinDAO: CoinDAO
 ) : LocalDataSource {
+
     override suspend fun addCryptoCoin(coin: Coin) {
         return coinDAO.addCryptoCoin(coin)
     }

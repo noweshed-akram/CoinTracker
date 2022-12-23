@@ -4,11 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.model.response.CoinList
+import com.noweshed.cointracker.data.model.response.USD
 import com.noweshed.cointracker.data.util.Network.isNetworkAvailable
 import com.noweshed.cointracker.data.util.Resource
 import com.noweshed.cointracker.domain.usecase.CoinUseCase
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,4 +38,21 @@ class CryptoViewModel @Inject constructor(
             coinList.postValue(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
         }
     }
+
+    suspend fun addCryptoCoin(coin: Coin) {
+        coinUseCase.addCryptoCoin(coin)
+    }
+
+    suspend fun addCryptoUSD(usd: USD) {
+        coinUseCase.addCryptoUSD(usd)
+    }
+
+    fun coinListItems(): Flow<List<Coin>> {
+        return coinUseCase.coinListItems()
+    }
+
+    fun usdListItems(): Flow<List<USD>> {
+        return coinUseCase.usdListItems()
+    }
+
 }

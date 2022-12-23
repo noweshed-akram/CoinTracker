@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.noweshed.cointracker.R
+import androidx.lifecycle.lifecycleScope
+import com.noweshed.cointracker.data.model.response.Coin
+import com.noweshed.cointracker.data.model.response.CoinList
+import com.noweshed.cointracker.data.model.response.USD
 import com.noweshed.cointracker.data.util.Resource
 import com.noweshed.cointracker.databinding.FragmentHomeBinding
-import com.noweshed.cointracker.databinding.FragmentSplashBinding
 import com.noweshed.cointracker.presentation.adapter.CoinAdapter
 import com.noweshed.cointracker.presentation.viewmodel.CryptoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,6 +52,9 @@ class HomeFragment : Fragment() {
                     coinAdapter.differ.submitList(response.data?.subList(0, 10))
                     fragmentHomeBinding.recyclerView.visibility = View.VISIBLE
                     Log.i("HomeFragment", "${response.data}")
+                    lifecycleScope.launch(){
+                        storeDataLocally(response.data)
+                    }
                     fragmentHomeBinding.loadingProgress.loadingProgress.visibility = View.GONE
                 }
                 is Resource.Loading -> {
@@ -70,5 +76,50 @@ class HomeFragment : Fragment() {
             cryptoViewModel.getAllCoins()
         }
         fragmentHomeBinding.recyclerView.adapter = coinAdapter
+    }
+
+    private suspend fun storeDataLocally(data: CoinList?) {
+
+        if (data != null) {
+            for (item in data) {
+                cryptoViewModel.addCryptoCoin(
+                    Coin(
+                        item.id,
+                        item.name,
+                        item.symbol,
+                        item.rank,
+                        item.circulatingSupply,
+                        item.totalSupply,
+                        item.maxSupply,
+                        item.betaValue,
+                        item.firstDataAt,
+                        item.lastUpdated,
+                        )
+                )
+
+                cryptoViewModel.addCryptoUSD(
+                    USD(
+                        item.id,
+                        item.quotes?.USD?.price,
+                        item.quotes?.USD?.volume24h,
+                        item.quotes?.USD?.volume24hChange24h,
+                        item.quotes?.USD?.marketCap,
+                        item.quotes?.USD?.marketCapChange24h,
+                        item.quotes?.USD?.percentChange15m,
+                        item.quotes?.USD?.percentChange30m,
+                        item.quotes?.USD?.percentChange1h,
+                        item.quotes?.USD?.percentChange6h,
+                        item.quotes?.USD?.percentChange12h,
+                        item.quotes?.USD?.percentChange24h,
+                        item.quotes?.USD?.percentChange7d,
+                        item.quotes?.USD?.percentChange30d,
+                        item.quotes?.USD?.percentChange1y,
+                        item.quotes?.USD?.athPrice,
+                        item.quotes?.USD?.athDate,
+                        item.quotes?.USD?.percentFromPriceAth,
+                    )
+                )
+            }
+        }
     }
 }

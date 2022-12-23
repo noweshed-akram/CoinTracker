@@ -1,6 +1,8 @@
 package com.noweshed.cointracker.data.model.response
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -8,6 +10,10 @@ import com.google.gson.annotations.SerializedName
  */
 @Entity(tableName = "USD")
 data class USD(
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    @SerializedName("id")
+    var id: String,
     @SerializedName("price")
     var price: Double? = null,
     @SerializedName("volume_24h")

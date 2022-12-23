@@ -1,10 +1,10 @@
 package com.noweshed.cointracker.data.model.response
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 /**
  * Created by noweshedakram on 21/12/22.
@@ -12,8 +12,9 @@ import java.io.Serializable
 @Entity(tableName = "CryptoCoin", indices = [Index(value = ["id", "lastUpdated"], unique = true)])
 data class Coin(
     @PrimaryKey(autoGenerate = false)
+    @NonNull
     @SerializedName("id")
-    var id: String? = null,
+    var id: String,
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("symbol")
@@ -34,4 +35,4 @@ data class Coin(
     var lastUpdated: String? = null,
     @SerializedName("quotes")
     var quotes: Quotes? = Quotes()
-) : Serializable
+)

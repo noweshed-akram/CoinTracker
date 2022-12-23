@@ -9,8 +9,6 @@ import com.noweshed.cointracker.data.model.response.Coin
 import com.noweshed.cointracker.data.util.Constants.BILLION
 import com.noweshed.cointracker.data.util.Utils.formatPrice
 import com.noweshed.cointracker.databinding.CoinListviewBinding
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 /**
  * Created by noweshedakram on 22/12/22.
